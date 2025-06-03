@@ -9,7 +9,7 @@ export const Content=({activeTab})=>{
         return <p>Here are the List of Services we offer</p>;
       case 'Blogs':
         return <p>Blogs to Read!</p>;
-      case 'Employee Information':
+      case 'Employee Information Management':
        return <EmployeeForm />
       default:
         return <p>Select a Tab</p>;
