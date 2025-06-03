@@ -6,7 +6,7 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState();
   const [sidebarOpen,setSidebarOpen]=useState(false);
-  const tabs = ['Careers', 'Services', 'Blogs'];
+  const tabs = ['Careers','Services','Blogs','Employee Info'];
   useEffect(() => {
    if(darkMode){
     document.documentElement.classList.add('dark');
