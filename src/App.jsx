@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
-
-const Button = ({onClick,children}) => {
-  return (
-    <button onClick={onClick} className="  px-6 py-6 bg-blue-500 text-lg rounded">
-      {children}
-    </button>
-  );
-};
+import { useState, useEffect } from 'react';
+import {Sidebar} from './components/Sidebar'
+import {Content} from './components/Content';
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
-
+  const [activeTab, setActiveTab] = useState();
+  const [sidebarOpen,setSidebarOpen]=useState(false);
+  const tabs = ['Careers', 'Services', 'Blogs'];
   useEffect(() => {
    if(darkMode){
     document.documentElement.classList.add('dark');
@@ -20,25 +16,11 @@ const App = () => {
   }, [darkMode]);
 
   return (
-    <div class="min-h-screen bg-white dark:bg-gray-900  text-black dark:text-white">
-      <div className="flex flex-row items-center px-2 py-5">
-        <h1 className="text-3xl font-bold mx-auto">
-          Dark Mode Enable Using Tailwind CSS
-        </h1>
-      </div>
-
-      <div className="flex flex-col justify-center items-center ">
-        <Button onClick={()=>setDarkMode(!darkMode)} className="">{darkMode?'Disable Dark Mode':'Enable Dark Mode'}</Button>
-
-        <div>
-          <p className="text-yellow-400 dark:text-amber-300">{darkMode?'I am amber':'Now I am yellow'}</p>
-        </div>
-
-        <div>
-          <p className="text-gray-900 dark:text-white">{darkMode?'I am white':' Now I am gray'}</p>
-        </div>
-      </div>
+    <div className="min-h-screen flex bg-white dark:bg-gray-900  text-black dark:text-white">
+      <Sidebar tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} darkMode={darkMode} setDarkMode={setDarkMode} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+      <Content activeTab={activeTab}/>
     </div>
+
   );
 };
 
