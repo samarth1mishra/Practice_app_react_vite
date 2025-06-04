@@ -5,7 +5,7 @@ import {Content} from './components/Content';
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState();
-  const [sidebarOpen,setSidebarOpen]=useState(false);
+  const [sidebarOpen,setSidebarOpen]=useState(true);
   const tabs = ['Careers','Services','Blogs','Employee Information Management','Saved Form Data'];
   useEffect(() => {
    if(darkMode){
