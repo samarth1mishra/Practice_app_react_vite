@@ -1,5 +1,5 @@
 import { EmployeeForm } from "./EmployeeForm";
-
+import { ViewFormData } from "./ViewFormData";
 export const Content=({activeTab})=>{
   const toggleContent=()=>{
     switch (activeTab){
@@ -11,6 +11,8 @@ export const Content=({activeTab})=>{
         return <p>Blogs to Read!</p>;
       case 'Employee Information Management':
        return <EmployeeForm />
+      case 'Saved Form Data':
+        return <ViewFormData/>
       default:
         return <p>Select a Tab</p>;
     }

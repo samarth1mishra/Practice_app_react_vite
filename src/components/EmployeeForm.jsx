@@ -21,9 +21,9 @@ export const EmployeeForm=()=>{
     <select  className="p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
     name="employeeType" value={formData.employeeType} onChange={handleChange}>
     <option value="">Select Type</option>
-    <option value="full-Time">Full-Time</option>
-    <option value="part-Time">Part-Time</option>
-    <option value="contract">Contract</option>
+    <option value="Full-Time">Full-Time</option>
+    <option value="Part-Time">Part-Time</option>
+    <option value="Contract">Contract</option>
     </select>
     </div>
         );
@@ -57,8 +57,18 @@ const handleSubmit=(e)=>{
         alert('Emergency Mobile must be a 10 digit Number.')
         return;
     }
-    
+    if(!/^\d+$/.test(formData.accountNumber)){
+        alert('Account Number should only contain digits.')
+        return;
+    }
+    const isEmpty=Object.entries(formData).some(([key,value])=>key!=='middleName' && value.trim()==="");
+    if(isEmpty){
+        alert('All fields except Middle Name are to be Mandatorily filled');
+        return;
+    }
     console.log(formData);
+    localStorage.setItem("employeeFormData",JSON.stringify(formData));
+    alert("Form Data has been stored locally additionally You may visit Form Data Tab to View the Form that has been submitted");
 }
     return (
         <form onSubmit={handleSubmit} className='space-y-8 text-sm'>
