@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import {Sidebar} from './components/Sidebar'
 import {Content} from './components/Content';
-
+import {Login} from './components/Login'
+import { SignUp } from './components/SignUp';
+import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom'
+import {ProtectedRoute} from './components/ProtectedRoute.jsx'
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState();
@@ -34,11 +37,18 @@ const App = () => {
     }
   };
   return (
-    <div className="min-h-screen flex bg-white dark:bg-gray-900  text-black dark:text-white">
+    <BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/signUp" element={<SignUp/>}/>
+      <Route path="/" element={<ProtectedRoute>
+      <div className="min-h-screen flex bg-white dark:bg-gray-900  text-black dark:text-white">
       <Sidebar tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} darkMode={darkMode} setDarkMode={setDarkMode} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
       <Content activeTab={activeTab}/>
     </div>
-
+      </ProtectedRoute>} />
+    </Routes>
+    </BrowserRouter>
   );
 };
 
