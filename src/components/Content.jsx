@@ -18,9 +18,9 @@ export const Content=({activeTab})=>{
     }
   };
   return (
-    <div  className="flex-1 p-8">
+    <div  className="flex-1 p-8  text-center">
         <h1 className="text-3xl font-bold mb-4">{activeTab}</h1>
-        <div className="text-lg">{toggleContent()}</div>
+        <div className="text-lg ">{toggleContent()}</div>
       </div>
   );
 };
