@@ -10,7 +10,7 @@ const App = () => {
   const [activeTab, setActiveTab] = useState();
   const [sidebarOpen,setSidebarOpen]=useState(true);
   const [isMobile,setIsMobile]=useState(false);
-  const tabs = ['Careers','Services','Blogs','Employee Information Management','Saved Form Data'];
+  const tabs = [{name:'Careers',icon:'💼'},{name:'Services',icon:'🛠️'},{name:'Blogs',icon:'📝'},{name:'Employee Information Management',icon:'👥'},{name:'Saved Form Data',icon:'💾'}];
   useEffect(() => {
    if(darkMode){
     document.documentElement.classList.add('dark');
@@ -42,9 +42,11 @@ const App = () => {
       <Route path="/login" element={<Login/>}/>
       <Route path="/signUp" element={<SignUp/>}/>
       <Route path="/" element={<ProtectedRoute>
-      <div className="min-h-screen flex bg-white dark:bg-gray-900  text-black dark:text-white">
+      <div className="h-screen flex bg-white dark:bg-gray-900  text-black dark:text-white ">
       <Sidebar tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} darkMode={darkMode} setDarkMode={setDarkMode} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+      <div className={`flex-1 p-4 overflow-auto transition-all duration-300 ${sidebarOpen?'ml-64':'ml-16'} md:ml-0`}>
       <Content activeTab={activeTab}/>
+      </div>
     </div>
       </ProtectedRoute>} />
     </Routes>
