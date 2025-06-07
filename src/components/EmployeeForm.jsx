@@ -1,13 +1,27 @@
 import {useState} from 'react'
+import {FaUser,FaMobileAlt,FaEnvelope,FaHome,FaCalendarAlt,FaVenusMars,FaBuilding,FaIdCard,FaBriefcase,FaUsers,FaUniversity,FaRegMoneyBillAlt,FaUserCircle} from 'react-icons/fa';
 
-const LabelInput=({label,...props})=>{
+const LabelInput=({label,icon,...props})=>{
     return (
-    <div className="flex flex-col">
-    <label className="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+    <div className="flex flex-col gap-1">
+    <label className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 ">
         {label}
     </label>
-    <input {...props} className="p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"></input>
+    <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
+    {icon && <span className="text-gray-500 dark:text-gray-300">{icon}</span>}
+    <input {...props} className="bg-transparent w-full text-sm text-gray-800 dark:text-white focus:outline-none"></input>
     </div>
+    </div>
+    )
+}
+const Section =({title,children})=>{
+    return (
+    <fieldset className=" p-6 bg-white dark:bg-gray-700 shadow-md border border-gray-200 dark:border-gray-600 rounded-xl">
+    <legend className="sm:text-lg md:text-xl font-bold mb-4 text-blue-700 dark:text-blue-300">
+            {title}
+    </legend>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">{children}</div>
+    </fieldset>
     )
 }
 
@@ -17,7 +31,8 @@ export const EmployeeForm=()=>{
     const EmployeeType=()=>{
         return (
     <div className="flex flex-col">
-    <label className="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Employee Type</label>
+    <label className="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+        Employee Type</label>
     <select  className="p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
     name="employeeType" value={formData.employeeType} onChange={handleChange}>
     <option value="">Select Type</option>
@@ -72,54 +87,38 @@ const handleSubmit=(e)=>{
 }
     return (
         <form onSubmit={handleSubmit} className=' space-y-8 text-sm max-w-4xl mx-auto'>
-        <fieldset className=" p-6 bg-white dark:bg-gray-700 shadow-md border border-gray-200 dark:border-gray-600 rounded-lg">
-        <legend className="sm:text-lg md:text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
-            Personal Details
-        </legend>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-          <LabelInput label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Enter first name"/>
-          <LabelInput label="Middle Name" name="middleName" value={formData.middleName} onChange={handleChange} placeholder="(Optional)"/>
-          <LabelInput label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Enter last name"/>
-          <LabelInput label="Main Mobile" name="mainMobile" value={formData.mainMobile} onChange={handleChange} placeholder="10-digit number" type="tel"/>
-          <LabelInput label="Emergency Mobile" name="emergencyMobile" value={formData.emergencyMobile} onChange={handleChange} placeholder="10-digit number" type="tel"/>
-          <LabelInput label="Email" name="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" type="email"/>
-          <LabelInput label="Address" name="address" value={formData.address} onChange={handleChange} placeholder="Current address"/>
-          <LabelInput label="Date of Birth" type="date" name="dob" value={formData.dob} onChange={handleChange}/>
-          <LabelInput label="Gender" name="gender" value={formData.gender} onChange={handleChange} placeholder="Male/Female/Other"/>
-          <LabelInput label="Marital Status" name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} placeholder="Single/Married"/>
-          </div>
-        </fieldset>
+        <Section title="Personal Details">
+        <LabelInput label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Enter first name" icon={<FaUser />} />
+        <LabelInput label="Middle Name" name="middleName" value={formData.middleName} onChange={handleChange} placeholder="(Optional)" icon={<FaUser />} />
+        <LabelInput label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Enter last name" icon={<FaUser />} />
+        <LabelInput label="Main Mobile" name="mainMobile" value={formData.mainMobile} onChange={handleChange} placeholder="10-digit number" type="tel" icon={<FaMobileAlt />} />
+        <LabelInput label="Emergency Mobile" name="emergencyMobile" value={formData.emergencyMobile} onChange={handleChange} placeholder="10-digit number" type="tel" icon={<FaMobileAlt />} />
+        <LabelInput label="Email" name="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" type="email" icon={<FaEnvelope />} />
+        <LabelInput label="Address" name="address" value={formData.address} onChange={handleChange} placeholder="Current address" icon={<FaHome />} />
+        <LabelInput label="Date of Birth" type="date" name="dob" value={formData.dob} onChange={handleChange} icon={<FaCalendarAlt />} />
+        <LabelInput label="Gender" name="gender" value={formData.gender} onChange={handleChange} placeholder="Male/Female/Other" icon={<FaVenusMars />} />
+        <LabelInput label="Marital Status" name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} placeholder="Single/Married" icon={<FaVenusMars />} />
+        </Section>
 
-        <fieldset className="p-6 bg-white dark:bg-gray-700 shadow-md border border-gray-200 dark:border-gray-600 rounded-lg">
-            <legend className="sm:text-lg md:text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
-                Employee Details
-            </legend>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-            <LabelInput label="Employee ID" name="employeeId" value={formData.employeeId} onChange={handleChange} placeholder="e.g., EMP123"/>
-            <LabelInput label="Job Title" name="jobTitle" value={formData.jobTitle} onChange={handleChange} placeholder="e.g., Intern"/>
-            <LabelInput label="Department" name="department" value={formData.department} onChange={handleChange} placeholder="e.g., Development"/>
-            <LabelInput label="Reporting Head" name="reportingHead" value={formData.reportingHead} onChange={handleChange} placeholder="Name of manager"/>
-            <LabelInput label="Assistant Reporting Head" name="assistantHead" value={formData.assistantHead} onChange={handleChange} placeholder="(If any)"/>
-            <EmployeeType/>
-            <LabelInput label="Joining Date" type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange}/>
-            <LabelInput label="Confirmation Date" type="date" name="confirmationDate" value={formData.confirmationDate} onChange={handleChange}/>
-            </div>
-        </fieldset>
+        <Section title="Employee Details">
+        <LabelInput label="Employee ID" name="employeeId" value={formData.employeeId} onChange={handleChange} placeholder="e.g., EMP123" icon={<FaIdCard />} />
+        <LabelInput label="Job Title" name="jobTitle" value={formData.jobTitle} onChange={handleChange} placeholder="e.g., Intern" icon={<FaBriefcase />} />
+        <LabelInput label="Department" name="department" value={formData.department} onChange={handleChange} placeholder="e.g., Development" icon={<FaBuilding />} />
+        <LabelInput label="Reporting Head" name="reportingHead" value={formData.reportingHead} onChange={handleChange} placeholder="Manager name" icon={<FaUsers />} />
+        <LabelInput label="Assistant Reporting Head" name="assistantHead" value={formData.assistantHead} onChange={handleChange} placeholder="(If any)" icon={<FaUsers />} />
+        <EmployeeType />
+        <LabelInput label="Joining Date" type="date" name="joiningDate" value={formData.joiningDate} onChange={handleChange} icon={<FaCalendarAlt />} />
+        <LabelInput label="Confirmation Date" type="date" name="confirmationDate" value={formData.confirmationDate} onChange={handleChange} icon={<FaCalendarAlt />} />
+        </Section>
 
-        <fieldset className="p-6 bg-white dark:bg-gray-700 shadow-md border border-gray-300 dark:border-gray-600 rounded-md">
-            <legend className="sm:text-lg md:text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
-              Bank Details  
-            </legend>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <LabelInput label="Bank Name" name="bankName" value={formData.bankName} onChange={handleChange} placeholder="e.g., State Bank of India"/>
-            <LabelInput label="Account Number" name="accountNumber" value={formData.accountNumber} onChange={handleChange} placeholder="Only digits" type="text"/>
-            <LabelInput label="IFSC Code" name="ifsc" value={formData.ifsc} onChange={handleChange}  placeholder="e.g., SBIN0001234"/>
-            <LabelInput label="Account Holder Name" name="accountHolder" value={formData.accountHolder} onChange={handleChange} placeholder="Name as per bank"/>
-            </div>
-        </fieldset>
-
+        <Section title="Bank Details">
+        <LabelInput label="Bank Name" name="bankName" value={formData.bankName} onChange={handleChange} placeholder="e.g., SBI" icon={<FaUniversity />} />
+        <LabelInput label="Account Number" name="accountNumber" value={formData.accountNumber} onChange={handleChange} placeholder="Only digits" type="text" icon={<FaRegMoneyBillAlt />} />
+        <LabelInput label="IFSC Code" name="ifsc" value={formData.ifsc} onChange={handleChange} placeholder="e.g., SBIN0001234" icon={<FaRegMoneyBillAlt />} />
+        <LabelInput label="Account Holder Name" name="accountHolder" value={formData.accountHolder} onChange={handleChange} placeholder="Name as per bank" icon={<FaUserCircle />} />
+        </Section>
         <div className="text-right">
-          <button type="Submit" className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"> Submit</button>
+          <button type="Submit" className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"> Submit</button>
         </div>
         </form>
     )
