@@ -12,7 +12,7 @@ export const Login=()=>{
             localStorage.setItem('isLoggedIn',true);
             navigate('/');
         }else{
-            alert('Invalid Email or PassWord. Please Try again')
+            alert('Invalid Email or Password. Please Try again')
         }
     }
     return (
