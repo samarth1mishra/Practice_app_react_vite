@@ -1,5 +1,6 @@
 import {SidebarButton} from './SidebarButton';
 import {Button} from './Button';
+import {motion} from 'framer-motion'
 
 export const Sidebar = ({tabs,activeTab,setActiveTab,darkMode,setDarkMode,sidebarOpen,setSidebarOpen }) => {
   return (
@@ -15,7 +16,7 @@ export const Sidebar = ({tabs,activeTab,setActiveTab,darkMode,setDarkMode,sideba
             </Button>
           )}
         </div>
-          <div className="space-y-2">
+          <div className="space-y-2 font-semibold px-2 py-4 rounded-xl bg-white dark:bg-gray-800 shadow-md transition-all duration-300">
             {tabs.map((tab) => (
               <SidebarButton
                 key={tab.name}
