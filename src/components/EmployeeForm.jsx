@@ -1,6 +1,8 @@
 import {useState} from 'react'
-import {FaUser,FaMobileAlt,FaEnvelope,FaHome,FaCalendarAlt,FaVenusMars,FaBuilding,FaIdCard,FaBriefcase,FaUsers,FaUniversity,FaRegMoneyBillAlt,FaUserCircle} from 'react-icons/fa';
+import {FaUser,FaUndo,FaMobileAlt,FaEnvelope,FaHome,FaCalendarAlt,FaVenusMars,FaBuilding,FaIdCard,FaBriefcase,FaUsers,FaUniversity,FaRegMoneyBillAlt,FaUserCircle} from 'react-icons/fa';
 import { FiUser, FiBriefcase, FiCreditCard } from 'react-icons/fi';
+import {toast,ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LabelInput=({label,icon,required,...props})=>{
     return (
@@ -28,6 +30,7 @@ const Section =({icon:Icon,title,children})=>{
 }
 
 export const EmployeeForm=()=>{
+    const initialState={firstName:'',middleName:'',lastName:'',mainMobile:'',emergencyMobile:'',email:'',address:'',dob:'',gender:'',maritalStatus:'',employeeId:'',jobTitle:'',department:'',reportingHead:'',assistantHead:'',employeeType:'',joiningDate:'',confirmationDate:'',bankName:'',accountNumber:'',ifsc:'',accountHolder:'' }
     const [formData,setFormData]=useState({firstName:'',middleName:'',lastName:'',mainMobile:'',emergencyMobile:'',email:'',address:'',dob:'',gender:'',maritalStatus:'',employeeId:'',jobTitle:'',department:'',reportingHead:'',assistantHead:'',employeeType:'',joiningDate:'',confirmationDate:'',bankName:'',accountNumber:'',ifsc:'',accountHolder:'' });
     const [emergencyEdited,setEmergencyEdited]=useState(false);
     const EmployeeType=()=>{
@@ -85,9 +88,23 @@ const handleSubmit=(e)=>{
     }
     console.log(formData);
     localStorage.setItem("employeeFormData",JSON.stringify(formData));
-    alert("Form Data has been stored locally additionally You may visit Form Data Tab to View the Form that has been submitted");
+     toast.success('Form has been Submitted!',{
+                position:'top-right',
+                autoClose:1500,
+                hideProgressBar:false,
+                pauseOnHover:true,
+                draggable:true,
+                theme:'colored',
+            })
+            resetForm();
 }
+const resetForm = () => {
+    setFormData(initialState);
+    setEmergencyEdited(false);
+  };
     return (
+      <>
+      <ToastContainer/>
         <form onSubmit={handleSubmit} className='space-y-8 text-sm max-w-4xl mx-auto'>
         <Section icon={FiUser} title="Personal Details">
         <LabelInput required label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Enter first name" icon={<FaUser />} />
@@ -120,10 +137,12 @@ const handleSubmit=(e)=>{
         <LabelInput required label="Account Holder Name" name="accountHolder" value={formData.accountHolder} onChange={handleChange} placeholder="Name as per bank" icon={<FaUserCircle />} />
         </Section>
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3">
           <p className="text-sm text-red-500">* indicates required field</p>
           <button type="Submit" className=" px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"> Submit</button>
+          <button type="button" onClick={resetForm} className="bg-gray-400 text-white px-6 py-3 rounded-lg hover:bg-gray-500 flex items-center justify-center gap-2"><FaUndo /> Reset</button>
         </div>
         </form>
+        </>
     )
 }
