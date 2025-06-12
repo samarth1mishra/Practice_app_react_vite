@@ -33,6 +33,7 @@ export const EmployeeForm=()=>{
     const initialState={firstName:'',middleName:'',lastName:'',mainMobile:'',emergencyMobile:'',email:'',address:'',dob:'',gender:'',maritalStatus:'',employeeId:'',jobTitle:'',department:'',reportingHead:'',assistantHead:'',employeeType:'',joiningDate:'',confirmationDate:'',bankName:'',accountNumber:'',ifsc:'',accountHolder:'' }
     const [formData,setFormData]=useState({firstName:'',middleName:'',lastName:'',mainMobile:'',emergencyMobile:'',email:'',address:'',dob:'',gender:'',maritalStatus:'',employeeId:'',jobTitle:'',department:'',reportingHead:'',assistantHead:'',employeeType:'',joiningDate:'',confirmationDate:'',bankName:'',accountNumber:'',ifsc:'',accountHolder:'' });
     const [emergencyEdited,setEmergencyEdited]=useState(false);
+    const [profilePic,setProfilePic]=useState(localStorage.getItem("profileImage")||null);
     const EmployeeType=()=>{
         return (
     <div className="flex flex-col">
@@ -62,6 +63,31 @@ const handleChange=(e)=>{
         setEmergencyEdited(true);
     }
 }
+const handleImageChange=(e)=>{
+    const file=e.target.files[0];
+    if(file){
+        const sizeInMB=file.size/(1024*1024);
+        if(sizeInMB>2){
+        toast.error("Image size must be less than 2MB", {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'colored',
+        });
+        setProfilePic(null);
+        localStorage.removeItem("profileImage");
+        return;
+        }
+        const reader=new FileReader();
+        reader.onload=()=>{
+            setProfilePic(reader.result);
+            localStorage.setItem("profileImage",reader.result);
+        };
+        reader.readAsDataURL(file);
+    }
+}
 const handleSubmit=(e)=>{
     e.preventDefault();
     const today=new Date().toISOString().split('T')[0];
@@ -80,6 +106,10 @@ const handleSubmit=(e)=>{
     if(!/^\d+$/.test(formData.accountNumber)){
         alert('Account Number should only contain digits.')
         return;
+    }
+    if(!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.ifsc)){
+      alert('Invalid IFSC format.');
+      return;
     }
     const isEmpty=Object.entries(formData).some(([key,value])=>key!=='middleName' && value.trim()==="");
     if(isEmpty){
@@ -101,11 +131,30 @@ const handleSubmit=(e)=>{
 const resetForm = () => {
     setFormData(initialState);
     setEmergencyEdited(false);
+    setProfilePic(null);
+    //localStorage.removeItem("profileImage");
   };
     return (
       <>
       <ToastContainer/>
         <form onSubmit={handleSubmit} className='space-y-8 text-sm max-w-4xl mx-auto'>
+            <div className="flex flex-col items-center gap-2">
+  <label className="text-base font-semibold text-gray-700 dark:text-gray-300">Upload Profile Pic</label>
+  <label htmlFor="profile-upload" className="relative group w-32 h-32 rounded-full border-4 border-blue-500 overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105">
+    {profilePic ? (
+      <img src={profilePic} alt="Profile Preview" className="w-full h-full  rounded-full"/>
+    ):(
+      <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-300">
+        <FaUser className="text-4xl" />
+      </div>
+    )}
+    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <span className="text-white text-xs font-semibold">Click to Upload</span>
+    </div>
+  </label>
+  <input id="profile-upload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+  <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Image must be less than 3MB</p>
+</div>
         <Section icon={FiUser} title="Personal Details">
         <LabelInput required label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Enter first name" icon={<FaUser />} />
         <LabelInput label="Middle Name" name="middleName" value={formData.middleName} onChange={handleChange} placeholder="(Optional)" icon={<FaUser />} />
