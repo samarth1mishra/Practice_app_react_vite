@@ -55,7 +55,7 @@ if(!savedData){
     return (
         <div className="flex flex-col items-center justify-center h-full p-8 bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 rounded-lg shadow-lg">
             <FiFileText className="text-6xl text-blue-400 dark:text-gray-600 mb-4 animate-pulse"/>
-            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300 ">"Form is Not Submitted Yet! Please Submit It."</p>
+            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300 ">Form is Not Submitted Yet! Please Submit It.</p>
         </div>
     );
 }
@@ -68,7 +68,7 @@ return (
        {profileImage &&(
         <div className="flex justify-center mb-6">
             <div className="flex flex-col items-center">
-             <img src={profileImage} alt="Uploaded Profile" className="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg object-cover transition-duration-300 hover:scale-115"/>
+             <img src={profileImage} alt="Uploaded Profile" className="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg  transition-duration-300 hover:scale-115"/>
              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                 Uploaded Profile Picture
              </p>
