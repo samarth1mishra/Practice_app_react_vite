@@ -1,9 +1,26 @@
+import { motion, AnimatePresence } from 'framer-motion';
 import {useState} from 'react'
 import {FaUser,FaUndo,FaMobileAlt,FaEnvelope,FaHome,FaCalendarAlt,FaVenusMars,FaBuilding,FaIdCard,FaBriefcase,FaUsers,FaUniversity,FaRegMoneyBillAlt,FaUserCircle} from 'react-icons/fa';
 import { FiUser, FiBriefcase, FiCreditCard } from 'react-icons/fi';
 import {toast,ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const Modal=({isOpen,title,description,onConfirm,onCancel,confirmText,cancelText})=>(
+  <AnimatePresence>
+    {isOpen &&(
+      <motion.div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.div  className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full p-6 m-2" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{title}</h2>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-6">{description}</p>
+          <div className="flex justify-end space-x-4">
+          <button onClick={onCancel} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg shadow hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition">{cancelText || 'Cancel'}</button>
+          <button onClick={onConfirm} className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">{confirmText||'Confirm'}</button>
+        </div>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+)
 const LabelInput=({label,icon,required,...props})=>{
     return (
     <div className="flex flex-col gap-1">
@@ -34,6 +51,8 @@ export const EmployeeForm=()=>{
     const [formData,setFormData]=useState({firstName:'',middleName:'',lastName:'',mainMobile:'',emergencyMobile:'',email:'',address:'',dob:'',gender:'',maritalStatus:'',employeeId:'',jobTitle:'',department:'',reportingHead:'',assistantHead:'',employeeType:'',joiningDate:'',confirmationDate:'',bankName:'',accountNumber:'',ifsc:'',accountHolder:'' });
     const [emergencyEdited,setEmergencyEdited]=useState(false);
     const [profilePic,setProfilePic]=useState(localStorage.getItem("profileImage")||null);
+    const [showSubmitModal, setShowSubmitModal] = useState(false)
+    const [showResetModal, setShowResetModal] = useState(false)
     const EmployeeType=()=>{
         return (
     <div className="flex flex-col">
@@ -92,27 +111,33 @@ const handleSubmit=(e)=>{
     e.preventDefault();
     const today=new Date().toISOString().split('T')[0];
     if(formData.dob>today){
-        alert('Date of Birth Cannot be in Future!!')
+      setShowSubmitModal(false)
+      alert('Date of Birth Cannot be in Future!!')  
         return;
     }
     if(!/^\d{10}$/.test(formData.mainMobile)){
+        setShowSubmitModal(false)
         alert('Main Mobile must be a 10 digit Number.')
         return;
     }
     if(!/^\d{10}$/.test(formData.emergencyMobile)){
+      setShowSubmitModal(false)
         alert('Emergency Mobile must be a 10 digit Number.')
         return;
     }
     if(!/^\d+$/.test(formData.accountNumber)){
+      setShowSubmitModal(false)
         alert('Account Number should only contain digits.')
         return;
     }
     if(!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.ifsc)){
+      setShowSubmitModal(false)
       alert('Invalid IFSC format.');
       return;
     }
     const isEmpty=Object.entries(formData).some(([key,value])=>key!=='middleName' && value.trim()==="");
     if(isEmpty){
+      setShowSubmitModal(false)
         alert('All fields except Middle Name are to be Mandatorily filled');
         return;
     }
@@ -127,17 +152,23 @@ const handleSubmit=(e)=>{
                 theme:'colored',
             })
             resetForm();
+            setShowSubmitModal(false)
 }
 const resetForm = () => {
-    setFormData(initialState);
+    setFormData({...initialState});
     setEmergencyEdited(false);
     setProfilePic(null);
+    setShowResetModal(false);
     //localStorage.removeItem("profileImage");
   };
     return (
       <>
       <ToastContainer/>
-        <form onSubmit={handleSubmit} className='space-y-8 text-sm max-w-4xl mx-auto'>
+        <form onSubmit={(e)=>{
+        e.preventDefault();
+        setShowSubmitModal(true);
+        }
+        } className='space-y-8 text-sm max-w-4xl mx-auto'>
             <div className="flex flex-col items-center gap-2">
   <label className="text-base font-semibold text-gray-700 dark:text-gray-300">Upload Profile Pic</label>
   <label htmlFor="profile-upload" className="relative group w-32 h-32 rounded-full border-4 border-blue-500 overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105">
@@ -189,9 +220,11 @@ const resetForm = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3">
           <p className="text-sm text-red-500">* indicates required field</p>
           <button type="Submit" className=" px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"> Submit</button>
-          <button type="button" onClick={resetForm} className="bg-gray-400 text-white px-6 py-3 rounded-lg hover:bg-gray-500 flex items-center justify-center gap-2"><FaUndo /> Reset</button>
+          <button type="button" onClick={()=>setShowResetModal(true)} className="bg-gray-400 text-white px-6 py-3 rounded-lg hover:bg-gray-500 flex items-center justify-center gap-2"><FaUndo /> Reset</button>
         </div>
         </form>
+        <Modal isOpen={showSubmitModal} title="Confirm Submission" description="Are you sure you want to submit the form? Please review all details before proceeding." confirmText="Yes, Submit" cancelText="Cancel" onConfirm ={handleSubmit} onCancel={() => setShowSubmitModal(false)}/>
+         <Modal isOpen={showResetModal} title="Confirm Reset" description="This will clear all entered data. Are you sure you want to reset the form?"  confirmText="Yes, Reset" cancelText="Keep Data" onConfirm={resetForm} onCancel={() => setShowResetModal(false)}/>
         </>
     )
 }

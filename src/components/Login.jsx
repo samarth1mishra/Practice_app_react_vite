@@ -34,7 +34,7 @@ export const Login=()=>{
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-[#191654] via-[#6e44ff] to-[#3b1c73] overflow-hidden">
              <motion.div className="absolute -inset-[50%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-300 via-pink-400 to-indigo-500 opacity-30 blur-3xl animate-pulse" animate={{rotate:360}} transition={{repeat:Infinity,duration:30,ease:'linear'}}/>
-             <div className="relative flex items-center justify-center min-h-screen px-4 py-12">
+             <div className="relative flex items-center  justify-center min-h-screen px-4 py-12">
             <motion.form onSubmit={handleLogin} initial={{opacity:0,scale:0.9}} animate={{opacity:1,scale:1}} transition={{duration:0.6,ease:'easeOut'}} className="relative z-10 w-full max-w-md p-8 bg-white/10 backdrop-blur-xl rounded-3xl shadow-2cl space-y-6 border-white/20">
            {/* <form onSubmit={handleLogin} className="bg-white dark:bg-gray-800 p-6 rounded shadow-md w-80 space-y-4"> */}
                 <h2  className="text-center text-3xl font-bold text-white drop-shadow-cl">Login</h2>

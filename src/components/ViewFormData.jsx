@@ -1,9 +1,10 @@
 import {useState,useEffect} from 'react'
-import {FiTrash2,FiDownload,FiClipboard,FiFileText, FiCheckCircle} from 'react-icons/fi';
+import {FiTrash2,FiDownload,FiClipboard,FiFileText, FiCheckCircle,FiX,FiAlertTriangle} from 'react-icons/fi';
 export const ViewFormData=()=>{
  const [savedData,setSaveData]=useState(null);
  const [message,setMessage]=useState('');
  const [profileImage,setProfileImage]=useState(null);
+ const [showModal,setShowModal]=useState(false);
 
  useEffect(()=>{
     const data=localStorage.getItem('employeeFormData')
@@ -23,6 +24,7 @@ export const ViewFormData=()=>{
     setSaveData(null);
     setProfileImage(null);
     setMessage('All data Cleared');
+    setShowModal(false);
     setTimeout(()=>setMessage(''),3000);
  }
  const copyToClipboard=()=>{
@@ -93,9 +95,35 @@ return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
         <button  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-xl shadow-md transition" onClick={copyToClipboard}><FiClipboard className="text-lg" /><span className="text-sm sm:text-base">Copy JSON</span></button>
         <button  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl shadow-md transition" onClick={downloadJson}><FiDownload className="text-lg" /><span className="text-sm sm:text-base">Download JSON</span></button>
-        <button  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-md transition" onClick={clearData}><FiTrash2 className="text-lg" /><span className="text-sm sm:text-base">Clear Data</span></button>
+        <button  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-md transition" onClick={()=>setShowModal(true)}><FiTrash2 className="text-lg" /><span className="text-sm sm:text-base">Clear Data</span></button>
 
     </div>
+    {showModal &&(
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 m-2 sm:p-8 max-w-sm w-full shadow-xl relative animate-fade-in-up">
+            <button onClick={() => setShowModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition">
+              <FiX className="text-xl" />
+            </button>
+            <div className="flex flex-col items-center text-center">
+              <FiAlertTriangle className="text-red-500 text-4xl mb-2" />
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2">
+                Confirm Deletion
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                Are you sure you want to permanently delete all form data and profile image?
+              </p>
+              <div className="flex gap-4 mt-4 w-full">
+                <button onClick={clearData} className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md font-medium transition">
+                  Yes, Delete
+                </button>
+                <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg shadow-md font-medium transition dark:bg-gray-700 dark:text-white">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    )}
     </div>
 )
 }

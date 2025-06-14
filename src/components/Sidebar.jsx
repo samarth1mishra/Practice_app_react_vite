@@ -89,9 +89,9 @@ export const Sidebar = ({tabs,activeTab,setActiveTab,darkMode,setDarkMode,sideba
                 <span>⏻</span>
                 <AnimatePresence>
                   {hoveredLogout && (
-                    <motion.div initial={{opacity:0,x:-10}} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="absolute left-full top-1/2 transform -translate-y-1/2 ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg" style={{pointerEvents:'none', whiteSpace:'nowrap'}}>
+                    <motion.div initial={{opacity:0,x:-10}} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="absolute left-full top-1/2 transform -translate-y-1/2 ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg dark:bg-white dark:text-gray-800" style={{pointerEvents:'none', whiteSpace:'nowrap'}}>
                       LogOut
-                      <div className="absolute right-full top-1/2 w-2 h-2 bg-gray-900 transform-translate-y-1/2 rotate-45"></div>
+                      <div className="absolute right-full top-1/2 w-2 h-2 bg-gray-900 transform -translate-y-1/2 rotate-45 dark:bg-white"></div>
                     </motion.div>
                   )}
                 </AnimatePresence>
