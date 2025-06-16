@@ -55,47 +55,71 @@ export const ViewFormData=()=>{
 
 if(!savedData){
     return (
-        <div className="flex flex-col items-center justify-center h-full p-8 bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 rounded-lg shadow-lg">
-            <FiFileText className="text-6xl text-blue-400 dark:text-gray-600 mb-4 animate-pulse"/>
-            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300 ">Form is Not Submitted Yet! Please Submit It.</p>
-        </div>
+        <div className="flex flex-col items-center justify-center h-full p-12 bg-gradient-to-tr from-purple-200 to-blue-200 dark:from-gray-800 dark:to-gray-700 rounded-xl">
+        <FiFileText className="text-7xl text-indigo-400 dark:text-indigo-300 mb-6 animate-pulse" />
+        <p className="text-xl font-medium text-gray-600 dark:text-gray-300">No form submitted yet.</p>
+      </div>
     );
 }
+const groups=[
+    {title:'Personal Details',fields:['firstName','middleName','lastName','mainMobile','emergencyMobile','email','address','dob','gender','maritalStatus']},
+    {title:'Employee Details',fields:['employeeId','jobTitle','department','reportingHead','assistantHead','employeeType','joiningDate','confirmationDate']},
+    {title:'Bank Details',fields:['bankName','accountNumber','ifsc','accountHolder']}
+  ];
+
+  const labels={
+    firstName:'First Name*', middleName: 'Middle Name', lastName: 'Last Name*',
+    mainMobile:'Main Mobile*', emergencyMobile: 'Emergency Mobile*', email: 'Email*', address: 'Address*',
+    dob:'Date of Birth*', gender: 'Gender*', maritalStatus: 'Marital Status*',
+    employeeId:'Employee ID*', jobTitle: 'Job Title*', department: 'Department*', reportingHead: 'Reporting Head*', assistantHead: 'Assistant Reporting Head',
+    employeeType:'Employee Type*', joiningDate: 'Joining Date*', confirmationDate: 'Confirmation Date*',
+    bankName:'Bank Name*', accountNumber: 'Account Number*', ifsc: 'IFSC Code*', accountHolder: 'Account Holder Name*'
+  };
+
 return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row items-center justify-center mb-6 gap-4">
-        <FiFileText className="text-3xl text-blue-700 dark:text-blue-300"/>
-        <h1 className="text-2xl md:text-3xl font-semibold text-blue-700 dark:text-blue-300 "> Details of the Form That is Submitted </h1>
-       </div>
+    <div className="sm:p-8 max-w-10xl  space-y-10">
+      <div className=" text-center">
        {profileImage &&(
         <div className="flex justify-center mb-6">
             <div className="flex flex-col items-center">
-             <img src={profileImage} alt="Uploaded Profile" className="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg  transition-duration-300 hover:scale-115"/>
+             <img src={profileImage} alt="Uploaded Profile" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-purple-500 shadow-xl"/>
              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                 Uploaded Profile Picture
              </p>
             </div>
         </div>
        )}
-       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Object.entries(savedData).map(([key,value])=>(
-              <div key={key} className="relative flex flex-col bg-white dark:bg-gray-800 p-4 rounded-lg shadow gover:shadow-lg transition duration-300 border border-blue-100 dark:border-gray-700 ">
-                <span className="text-xs font-semibold text-blue-600 dark:text-blue-300 uppercase tracking wide">{key.replace(/([A-Z])/g,' $1')}</span>
-                <span className="mt-1 text-gray-900 dark:text-gray-100 break-words text-sm">{value||'-'}</span>
+       </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+            {groups.map(({ title, fields }) => (
+          <div key={title} className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-md space-y-4 w-full sm:w-[90%] sm:mx-auto">
+            <h2 className="text-xl font-bold text-purple-700 dark:text-purple-300 border-b pb-2">{title}</h2>
+            <dl className=" space-y-4">
+              {fields.map((key) => (
+                <div key={key} className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                  <dt className="text-sm font-semibold text-gray-600 dark:text-gray-100 w-full sm:w-1/3 break-words">
+                    {labels[key]}
+                  </dt>
+                  <dd className="text-sm font-md text-gray-600 dark:text-gray-300 w-full sm:w-2/3 break-words text-center sm:text-center">
+                    {savedData[key] || '-'}
+                  </dd>
                 </div>
-            ))}
+              ))}
+            </dl>
+          </div>
+        ))}
         </div>
-         <div className="flex items-center justify-center gap- mt-4">
+         <div className="flex flex-col items-center justify-center space-y-4">
         { message && (
-            <div className="flex items-center gap-2 bg-green-100 text-bg-green-800 dark:bg-green-800 dark:text-green-100 px-4 py-2 rounded-lg shadow animate-fade-in">
+            <div className="flex items-center gap-2 bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100 px-6 py-2 rounded-lg shadow-md">
                <FiCheckCircle /><span>{message}</span>
             </div>
         )}
         </div>
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-        <button  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-xl shadow-md transition" onClick={copyToClipboard}><FiClipboard className="text-lg" /><span className="text-sm sm:text-base">Copy JSON</span></button>
-        <button  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl shadow-md transition" onClick={downloadJson}><FiDownload className="text-lg" /><span className="text-sm sm:text-base">Download JSON</span></button>
-        <button  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-md transition" onClick={()=>setShowModal(true)}><FiTrash2 className="text-lg" /><span className="text-sm sm:text-base">Clear Data</span></button>
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+        <button  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-xl shadow-md transition-transform hover:scale-105" onClick={copyToClipboard}><FiClipboard className="text-base sm:text-lg" /><span  className="text-sm sm:text-base">Copy JSON</span></button>
+        <button  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl shadow-md transition-transform hover:scale-105" onClick={downloadJson}><FiDownload className="text-base sm:text-lg" /><span className="text-sm sm:text-base">Download JSON</span></button>
+        <button   className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl shadow-md transition-transform hover:scale-105" onClick={()=>setShowModal(true)}><FiTrash2 className="text-base sm:text-lg" /><span className="text-sm sm:text-base">Clear Data</span></button>
 
     </div>
     {showModal &&(
