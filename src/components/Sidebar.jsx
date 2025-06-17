@@ -3,14 +3,11 @@ import {SidebarButton} from './SidebarButton';
 import {Button} from './Button';
 import {motion,AnimatePresence} from 'framer-motion'
 
-export const Sidebar = ({tabs,activeTab,setActiveTab,darkMode,setDarkMode,sidebarOpen,setSidebarOpen }) => {
+export const Sidebar = ({tabs,activeTab,setActiveTab,darkMode,setDarkMode,sidebarOpen,setSidebarOpen,handleLogout}) => {
   const [hoveredTab, setHoveredTab] = useState(null);
   const [showLogoutConfirm,setShowLogoutConfirm]=useState(null);
   const [hoveredLogout,setHoveredLogout]=useState(false);
-  const handleLogout=()=>{
-    localStorage.removeItem('isLoggedIn');
-    window.location.href='/login'
-  }
+ 
   return (
     <>
     <AnimatePresence>
@@ -77,7 +74,8 @@ export const Sidebar = ({tabs,activeTab,setActiveTab,darkMode,setDarkMode,sideba
         </div>
         <div >
           <motion.button whileHover={{ scale: 1.05 }} onMouseEnter={()=>setHoveredLogout(true)} onMouseLeave={()=>setHoveredLogout(false)}  whileTap={{ scale: 0.95 }} onClick={()=>{
-           setShowLogoutConfirm(true);
+           handleLogout();  
+           setShowLogoutConfirm(false);
           }} className={`w-full flex items-center justify-center px-4 py-3 mt-6 text-sm font-medium rounded-lg transition-all ${sidebarOpen?'bg-gray-100 shadow-lg dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-red-500 hover:text-white':'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200'}`}>
             {sidebarOpen ? (
               <div className="flex items-center space-x-2">

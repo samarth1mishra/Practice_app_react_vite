@@ -1,18 +1,36 @@
+import {useState,useEffect} from 'react'
 import { EmployeeForm } from "./EmployeeForm";
 import { ViewFormData } from "./ViewFormData";
-export const Content=({activeTab})=>{
+import { AdminPanel } from "./AdminPanel";
+import { Login } from "./Login";
+export const Content=({activeTab,isAdminLoggedIn,isUserLoggedIn})=>{
+  const [adminLoggedIn, setAdminLoggedIn] = useState(isAdminLoggedIn);
+  const [employeeLoggedIn, setEmployeeLoggedIn] = useState(isUserLoggedIn);
+  useEffect(() => {
+    setAdminLoggedIn(localStorage.getItem('isAdminLoggedIn') === 'true');
+    setEmployeeLoggedIn(localStorage.getItem('isUserLoggedIn') === 'true');
+  }, [activeTab]);
+  const handleLoginUpdate = (isAdmin) => {
+    if (isAdmin) {
+      setAdminLoggedIn(true);
+    } else {
+      setEmployeeLoggedIn(true);
+    }
+  };
   const toggleContent=()=>{
-    switch (activeTab){
-      case 'Careers':
-        return <p>Page contains Jobs that the organisation has Currently Rolled Out!</p>;
-      case 'Services':
-        return <p>Here are the List of Services we offer</p>;
-      case 'Blogs':
-        return <p>Blogs to Read!</p>;
-      case 'Employee Information Management':
-       return <EmployeeForm />
-      case 'Saved Form Data':
-        return <ViewFormData/>
+    switch (activeTab) {
+      case "Employee/Intern Panel":
+        return employeeLoggedIn ? (
+          <EmployeePanel />
+        ) : (
+          <Login setIsAdminLoggedIn={setAdminLoggedIn} setIsUserLoggedIn={setEmployeeLoggedIn}/>
+        );
+      case "Admin Panel":
+        return adminLoggedIn ? (
+          <AdminPanel />
+        ) : (
+          <Login setIsAdminLoggedIn={setAdminLoggedIn} setIsUserLoggedIn={setEmployeeLoggedIn}/>
+        );
       default:
         return <p>Select a Tab</p>;
     }
