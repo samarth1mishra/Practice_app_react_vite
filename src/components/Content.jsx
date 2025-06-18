@@ -1,6 +1,5 @@
 import {useState,useEffect} from 'react'
-import { EmployeeForm } from "./EmployeeForm";
-import { ViewFormData } from "./ViewFormData";
+// import { EmployeeForm } from "./EmployeeForm";
 import { AdminPanel } from "./AdminPanel";
 import { Login } from "./Login";
 export const Content=({activeTab,isAdminLoggedIn,isUserLoggedIn})=>{
@@ -36,8 +35,7 @@ export const Content=({activeTab,isAdminLoggedIn,isUserLoggedIn})=>{
     }
   };
   return (
-    <div  className="flex-1 p-8  text-center">
-        <h1 className="text-3xl font-bold mb-4">{activeTab}</h1>
+    <div  className="p-1">
         <div className="text-lg ">{toggleContent()}</div>
       </div>
   );
