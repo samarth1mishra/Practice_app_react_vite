@@ -27,7 +27,9 @@ export default function DepartmentsTab({ departments, setDepartments, windowWidt
     setTempDeptName('');
   }
   const deleteDepartment=(id)=>{
-    setDepartments((prev)=>prev.filter((dept)=>dept.id!=id));
+    const updated=departments.filter((dept)=>dept.id!==id);
+    setDepartments(updated);
+    localStorage.setItem('departments',JSON.stringify(updated));
   }
   return (
     <div className="space-y-4 md:space-y-6">
