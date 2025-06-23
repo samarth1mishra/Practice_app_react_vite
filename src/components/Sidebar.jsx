@@ -35,7 +35,7 @@ export const Sidebar = ({tabs,activeTab,setActiveTab,darkMode,setDarkMode,sideba
       <div>
         <div className={`${sidebarOpen?'flex items-center justify-between mb-6': 'flex flex-col items-center mb-6 space-y-4'}`}>
           <motion.button  whileHover={{rotate:90,backgroundColor:darkMode?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.05)'}} whileTap={{scale:0.95}} onClick={()=>setSidebarOpen(!sidebarOpen)} className="text-xl text-gray-700 dark:text-gray-200 font-bold hover:text-blue-500 transition-all" title="Toggle Sidebar">
-            {sidebarOpen?(<span classNme="text-xl">✕</span>):(<span classNme="text-xl">☰</span>)}
+            {sidebarOpen?(<span className="text-xl">✕</span>):(<span className="text-xl">☰</span>)}
           </motion.button>
           {sidebarOpen && (
              <Button onClick={() => setDarkMode(!darkMode)} size="small" className="text-sm py-2 px-3 rounded-lg shadow-sm hover:shadow transition-all" whileHover={{scale:1.05}}  whileTap={{scale:0.95}}>
