@@ -46,6 +46,7 @@ const App = () => {
       setIsAdminLoggedIn(false);
     } else {
       localStorage.setItem('isUserLoggedIn', 'false');
+       localStorage.removeItem('currentUserEmail');
       setIsUserLoggedIn(false);
     }
     setActiveTab((previousVal)=>(previousVal==='Admin Panel' ? 'Employee/Intern Panel' : 'Admin Panel'));

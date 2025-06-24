@@ -29,61 +29,66 @@ export default function EmployeesTab({ departments, designations }) {
     sessionStorage.setItem('employeesData', JSON.stringify(employees));
   }, [employees]);
 
-  const initialEmployeeForm = {
-    fullName: '',
-    dateOfBirth: '',
-    gender: '',
-    bloodGroup: '',
-    fatherName: '',
-    motherName: '',
-    officialEmail: '',
-    personalEmail: '',
-    altPersonalEmail: '',
-    contactNumber: '',
-    altContactNumber: '',
-    emergencyNumber: '',
-    aadharNumber: '',
-    panNumber: '',
-    maritalStatus: '',
-    currentAddress: '',
+  const initialEmployeeForm = {fullName: 'Alex Johnson',
+    dateOfBirth: '1990-05-15',
+    gender: 'Male',
+    bloodGroup: 'O+',
+    fatherName: 'Robert Johnson',
+    motherName: 'Susan Johnson',
+    officialEmail: 'alex.johnson@company.com',
+    personalEmail: 'alex.j@gmail.com',
+    altPersonalEmail: 'alexjohnson.backup@yahoo.com',
+    contactNumber: '+1 (555) 123-4567',
+    altContactNumber: '+1 (555) 987-6543',
+    emergencyNumber: '+1 (555) 789-0123',
+    aadharNumber: '1234-5678-9012',
+    panNumber: 'ABCDE1234F',
+    maritalStatus: 'Married',
+    currentAddress: '123 Main Street, Apt 4B, New York, NY 10001, USA',
     sameAddress: false,
-    permanentAddress: '',
-    employmentType: '',
-    employeeId: '',
-    employeeType: '',
-    dateOfJoining: '',
-    period: '',
-    department: '',
-    designation: '',
-    reportingHead: '',
-    bankName: '',
-    accountNumber: '',
-    ifscCode: '',
-    accountHolderName: '',
-    previousEmployerName: '',
-    previousDesignation: '',
-    previousAnnualCTC: '',
-    previousMonthlySalary: '',
-    uanNumber: '',
-    esicNumber: '',
-    password: '',
-    confirmPassword: '',
+    permanentAddress: '456 Oak Avenue, San Francisco, CA 94101, USA',
+    employmentType: 'Full Time Employee',
+    employeeId: 'EMP12345',
+    employeeType: 'Experienced',
+    dateOfJoining: '2020-03-10',
+    period: 'Confirmation',
+    department: 'Engineering',
+    designation: 'Senior Software Engineer',
+    reportingHead: 'Sarah Williams (EMP98765)',
+    bankName: 'City National Bank',
+    accountNumber: '9876543210',
+    ifscCode: 'CNBA0123456',
+    accountHolderName: 'Alex Johnson',
+    previousEmployerName: 'Tech Innovations Inc.',
+    previousDesignation: 'Software Engineer',
+    previousAnnualCTC: '$95,000',
+    previousMonthlySalary: '$7,916',
+    uanNumber: 'UAN123456789',
+    esicNumber: 'ESIC987654321',
+    password: 'securePassword123!',
+    confirmPassword: 'securePassword123!',
     isActive: true,
     photo: null,
-    documents: [] 
-  };
+    documents: [
+      {
+        id: 1,
+        name: 'Resume',
+        file: null
+      },
+      {
+        id: 2,
+        name: 'Offer Letter',
+        file: null
+      }
+    ]};
 
   const [employeeForm, setEmployeeForm] = useState({ ...initialEmployeeForm });
-
-  // Memoized designations list
   const filteredDesignations = useMemo(() => {
     if (!employeeForm.department) return [];
     return designations
       .filter(des => des.department === employeeForm.department)
       .map(des => des.designation);
   }, [employeeForm.department, designations]);
-
-  // Track window size for responsive design
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -100,8 +105,6 @@ export default function EmployeesTab({ departments, designations }) {
       setEmployeeForm(prev => ({ ...prev, employeeId: newId }));
     }
   }, [employeeForm.employmentType, employees]);
-
-  // Responsive table columns
   const getVisibleColumns = () => {
     if (windowWidth < 640) return ['name', 'actions'];
     if (windowWidth < 768) return ['type', 'name', 'status', 'actions'];
@@ -111,13 +114,10 @@ export default function EmployeesTab({ departments, designations }) {
 
   const addEmployee = async () => {
     if (employeeForm.fullName && employeeForm.employmentType) {
-      // Convert photo to base64 if it's a file
       let photoBase64 = employeeForm.photo;
       if (employeeForm.photo instanceof Blob) {
         photoBase64 = await toBase64(employeeForm.photo);
       }
-
-      // Convert document files to base64
       const documentsWithBase64 = await Promise.all(
         employeeForm.documents.map(async doc => {
           if (doc.file instanceof Blob) {
@@ -143,13 +143,10 @@ export default function EmployeesTab({ departments, designations }) {
   };
 
   const updateEmployee = async () => {
-    // Convert photo to base64 if it's a file
     let photoBase64 = employeeForm.photo;
     if (employeeForm.photo instanceof Blob) {
       photoBase64 = await toBase64(employeeForm.photo);
     }
-
-    // Convert document files to base64
     const documentsWithBase64 = await Promise.all(
       employeeForm.documents.map(async doc => {
         if (doc.file instanceof Blob) {
@@ -159,20 +156,17 @@ export default function EmployeesTab({ departments, designations }) {
         return doc;
       })
     );
-
     const updatedEmployees = [...employees];
     updatedEmployees[editingIndex] = { 
       ...employeeForm,
       photo: photoBase64,
       documents: documentsWithBase64
     };
-    
     setEmployees(updatedEmployees);
     resetEmployeeForm();
     setShowEmployeeForm(false);
     setEditingIndex(-1);
   };
-
   const deleteEmployee = (id) => {
     const newEmployees = employees.filter(emp => emp.id !== id);
     setEmployees(newEmployees);

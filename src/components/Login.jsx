@@ -23,6 +23,7 @@ export const Login=({setIsAdminLoggedIn,setIsUserLoggedIn})=>{
         const user=JSON.parse(localStorage.getItem('user'));
         const isAdmin = email === 'admin@enrope.solutions.com' && password === '12345';
         if (user && user.email === email && user.password === password) {
+            localStorage.setItem('currentUserEmail', email);
         if (isAdmin) {
           localStorage.setItem('isAdminLoggedIn', 'true');
           setIsAdminLoggedIn(true);

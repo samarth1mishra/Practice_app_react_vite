@@ -1,6 +1,7 @@
 import {useState,useEffect} from 'react'
 // import { EmployeeForm } from "./EmployeeForm";
 import { AdminPanel } from "./AdminPanel";
+import { EmployeeInternPanel } from './EmployeeInternPanel';
 import { Login } from "./Login";
 export const Content=({activeTab,isAdminLoggedIn,isUserLoggedIn})=>{
   const [adminLoggedIn, setAdminLoggedIn] = useState(isAdminLoggedIn);
@@ -20,7 +21,7 @@ export const Content=({activeTab,isAdminLoggedIn,isUserLoggedIn})=>{
     switch (activeTab) {
       case "Employee/Intern Panel":
         return employeeLoggedIn ? (
-          <EmployeePanel />
+          <EmployeeInternPanel />
         ) : (
           <Login setIsAdminLoggedIn={setAdminLoggedIn} setIsUserLoggedIn={setEmployeeLoggedIn}/>
         );
