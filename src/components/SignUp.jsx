@@ -31,26 +31,26 @@ export const SignUp=()=>{
         
      }
      return (
-        <>
-        <ToastContainer/>
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-[#a6c0fe] to-[#f68084] dark:from-gray-900 dark:to-gray-800 p-6 ">
-            <motion.form onSubmit={handleSubmit} initial={{opacity:0,scale:0.3}} animate={{opacity:1,scale:1}} transition={{duration:0.5,ease:'easeOut'}} className="bg-gradient-to-t from-[#fdcbf1] to-[#e6dee9] dark:bg-gray-900 w-full max-w-lg p-10 rounded-3xl shadow-2xl  space-y-8">
-                <h2 className="text-5xl font-extrabold text-center text-gray-900 dark:text-gray-100">Create Your Account</h2>
-                <div className="flex flex-row items-center jutsify-center bg-white border border-gray-300 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white">
-                    <FiMail className="ml-4 text-gray-400 dark:text-gray-500 "/>
-                <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} className="flex-1 w-full pl-2 pr-2 py-4  bg-transparent outline-none "/>
-                </div>
-                 <div className="flex flex-row items-center justify-between bg-white border border-gray-300 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white">
-                <FiLock className="ml-4 text-gray-400 dark:text-gray-500 " />
-                <input type={showPassword?'text':'password'} placeholder="Password" required value={password} onChange={(e)=>setPassword(e.target.value)} className="flex-1 w-full pl-2 pr-2 py-4  bg-transparent outline-none "/>
-                <button type="button" onClick={()=>setShowPassword(!showPassword)} className="mr-4 text-gray-600">{showPassword?<FiEyeOff/>:<FiEye/>}</button>
-                </div>
-                <motion.button type="submit" disabled={loading} whileHover={{scale:1.02}} whileTap={{scale:0.98}} className="w-full py-3 sm:py-4 bg-purple-600 text-white font-semibold text-sm sm:text-base rounded -xl sm:rounded-2xl shadow-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition">{loading?'Signing up...':'Sign Up'}</motion.button>
-                <p className="text-center text-sm dark:text-white sm:text-base text-gray-600 dark:text-gray-400">
-                    Already have an Account?{' '}<button type="button" onClick={()=>navigate('/login')} className="text-purple-600 hover:underline dark:text-purple-400 font-medium">Log In</button>
-                </p>
-            </motion.form>
+         <>
+    <ToastContainer position="top-center" autoClose={1500} pauseOnHover draggable theme="colored" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-300 to-pink-200 dark:from-indigo-900 dark:to-purple-900 p-6 sm:p-8 lg:p-10">
+      <motion.form onSubmit={handleSubmit} initial={{ opacity: 0, scale: 0.3 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: 'easeOut' }} className="w-full max-w-md bg-white/70 dark:bg-gray-900/80 backdrop-blur-md p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl space-y-6 sm:space-y-8">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white">Create Your Account</h2>
+        <div className="flex items-center bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-2xl px-4 py-3 sm:py-4 text-gray-900 dark:text-white">
+          <FiMail className="mr-3 text-gray-500 dark:text-gray-400" />
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="flex-1 min-w-0 bg-transparent text-sm sm:text-base placeholder-gray-400 dark:placeholder-gray-500 outline-none" />
         </div>
-        </>
+        <div className="flex items-center bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-2xl px-4 py-3 sm:py-4 text-gray-900 dark:text-white">
+          <FiLock className="mr-3 text-gray-500 dark:text-gray-400" />
+          <input type={showPassword ? 'text' : 'password'} placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} className="flex-1 min-w-0 bg-transparent text-sm sm:text-base placeholder-gray-400 dark:placeholder-gray-500 outline-none" />
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="ml-3 text-gray-500 dark:text-gray-400">{showPassword ? <FiEyeOff /> : <FiEye />}</button>
+        </div>
+        <motion.button type="submit" disabled={loading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-pink-700 dark:to-purple-700 text-white font-semibold text-sm sm:text-base rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition">{loading ? 'Signing up...' : 'Sign Up'}</motion.button>
+        <div className="text-center text-sm sm:text-base text-gray-600 dark:text-gray-400">
+          Already have an account? <button type="button" onClick={() => navigate('/login')} className="text-purple-600 hover:underline dark:text-purple-400 font-medium">Log In</button>
+        </div>
+      </motion.form>
+    </div>
+  </>
      )
 }

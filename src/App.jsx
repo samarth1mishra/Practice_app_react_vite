@@ -31,7 +31,10 @@ const App = () => {
     window.addEventListener('resize',handleReSize);
     return ()=> window.removeEventListener('resize',handleReSize);
   },[])
-  
+  useEffect(()=>{
+    const savedTab=localStorage.getItem('activeTab');
+    setActiveTab(savedTab||'Employee/InternPanel');
+  },[]);
   const handleTabChange=(tab)=>{
     setActiveTab(tab);
     localStorage.setItem('activeTab',tab);
@@ -54,18 +57,18 @@ const App = () => {
   };
   return (
     <BrowserRouter>
+    <div className="h-screen flex bg-white dark:bg-gray-900  text-black dark:text-white ">
+      <Sidebar tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} darkMode={darkMode} setDarkMode={setDarkMode} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}   handleLogout={handleLogout}/>
+      <div className={`flex-1 p-4 overflow-auto transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'} md:ml-0`}>
     <Routes>
-      <Route path="/login" element={<Login/>}/>
+      <Route path="/login" element={<Login  setIsAdminLoggedIn={setIsAdminLoggedIn} setIsUserLoggedIn={setIsUserLoggedIn} activeTab={activeTab}/>}/>
       <Route path="/signUp" element={<SignUp/>}/>
       <Route path="/" element={
-      <div className="h-screen flex bg-white dark:bg-gray-900  text-black dark:text-white ">
-      <Sidebar tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} darkMode={darkMode} setDarkMode={setDarkMode} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}   handleLogout={handleLogout}/>
-      <div className={`flex-1 p-4 overflow-auto transition-all duration-300 ${sidebarOpen?'ml-64':'ml-16'} md:ml-0`}>
-      <Content activeTab={activeTab} isAdminLoggedIn={isAdminLoggedIn} isUserLoggedIn={isUserLoggedIn}/>
+      <Content activeTab={activeTab} isAdminLoggedIn={isAdminLoggedIn} isUserLoggedIn={isUserLoggedIn} setIsAdminLoggedIn={setIsAdminLoggedIn} setIsUserLoggedIn={setIsUserLoggedIn}/>
+       } />
+      </Routes>
       </div>
     </div>
-     } />
-    </Routes>
     </BrowserRouter>
   );
 };
