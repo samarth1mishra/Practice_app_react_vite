@@ -75,9 +75,13 @@ export const Login = ({ setIsAdminLoggedIn, setIsUserLoggedIn,activeTab}) => {
       if (isAdmin) {
         localStorage.setItem('isAdminLoggedIn', 'true');
         setIsAdminLoggedIn(true);
+        setIsUserLoggedIn(false);
+        localStorage.setItem('isUserLoggedIn', 'false');
       } else {
         localStorage.setItem('isUserLoggedIn', 'true');
         setIsUserLoggedIn(true);
+        setIsAdminLoggedIn(false);
+        localStorage.setItem('isAdminLoggedIn', 'false');
       }
 
       if (remember) {
