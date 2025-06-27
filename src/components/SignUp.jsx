@@ -1,11 +1,16 @@
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import {useNavigate} from 'react-router-dom'
 import { FiMail,FiLock,FiEye,FiEyeOff } from 'react-icons/fi';
 import {easeIn, motion } from 'framer-motion'
 import {toast,ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-export const SignUp=()=>{
+export const SignUp=({activeTab})=>{
     const navigate=useNavigate();
+   useEffect(() => {
+    if (activeTab === "Employee/Intern Panel") {
+      navigate("/");
+    }
+  }, [activeTab]);
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     const [showPassword,setShowPassword]=useState(false);

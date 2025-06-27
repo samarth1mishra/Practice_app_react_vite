@@ -37,65 +37,41 @@ export const Login = ({ setIsAdminLoggedIn, setIsUserLoggedIn,activeTab}) => {
 
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1000));
-
-    const user = JSON.parse(localStorage.getItem('user'));
-    const isAdmin = email === 'admin@enrope.solutions.com' && password === '12345';
-    if (activeTab === "Admin Panel" && !isAdmin) {
-      toast.error('🔒 You are not an admin. Please log in as an employee in the Employee/Intern Panel.');
-      setLoading(false);
-      return;
-    } 
-    if (activeTab === "Employee/Intern Panel" && isAdmin) {
-      toast.error('👔 Admins should log in using the Admin Panel');
-      setLoading(false);
-      return;
-    }
-    console.log(user);
-     if (activeTab === "Employee/Intern Panel" && user.email!==email) {
-      console.log('why');
-      toast.error(
-        <div>
-          You're not signed up yet! 
-          <br />
-          <a 
-            href="/signUp" 
-            className="underline text-blue-300 hover:text-blue-200 font-bold"
-          >
-            Create an account now
-          </a>
-        </div>,
-        { autoClose: 5000 }
-      );
-      setLoading(false);
-      return;
-    }
-    if (user && user.email === email && user.password === password) {
-      localStorage.setItem('currentUserEmail', email);
-
-      if (isAdmin) {
-        localStorage.setItem('isAdminLoggedIn', 'true');
-        setIsAdminLoggedIn(true);
-        setIsUserLoggedIn(false);
-        localStorage.setItem('isUserLoggedIn', 'false');
-      } else {
-        localStorage.setItem('isUserLoggedIn', 'true');
+    if (activeTab === "Employee/Intern Panel" ) {
+      const employeeUsers=JSON.parse(localStorage.getItem('employeeUsers'))||[];
+      const validEmployee=employeeUsers.find(user=>(user.officialEmail===email|| user.personalEmail===email) && (user.password===password));
+      if(validEmployee){
+        localStorage.setItem('currentUserEmail',email);
+        localStorage.setItem('isUserLoggedIn',true);
         setIsUserLoggedIn(true);
         setIsAdminLoggedIn(false);
         localStorage.setItem('isAdminLoggedIn', 'false');
+        toast.success('🎉 Employee Login successful!');
+        setTimeout(() => navigate('/'), 800);
+      }else{
+      toast.error('Invalid Credentials!');
+      setLoading(false);
+      return;
       }
-
-      if (remember) {
-        localStorage.setItem('remember Email', email);
-      }
-
+    }else if(activeTab==="Admin Panel"){
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.email === email && user.password === password) {
+      console.log("yes");
+      localStorage.setItem('currentUserEmail', email);
+      localStorage.setItem('isAdminLoggedIn', 'true');
+      setIsAdminLoggedIn(true);
+      setIsUserLoggedIn(false);
+      localStorage.setItem('isUserLoggedIn', 'false');       
       toast.success('🎉 Login successful!');
-      setTimeout(() => navigate('/'), 800);
-    } else {
+      setTimeout(() => navigate('/'), 2000);
+      } 
+     else {
       toast.error('❌ Invalid credentials');
     }
-
     setLoading(false);
-  };
+    return
+  }
+  }
 
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -310,13 +286,14 @@ export const Login = ({ setIsAdminLoggedIn, setIsUserLoggedIn,activeTab}) => {
                 <span className="font-medium">Google</span>
               </motion.button>
             </div>
-
+            {activeTab === 'Admin Panel' && (
             <p className="text-center text-white/80 text-sm mt-6">
               Don't have an account?{' '}
               <a href="/signUp" className="text-pink-400 hover:text-pink-300 transition-colors font-medium">
                 Create Account
               </a>
             </p>
+            )}
           </form>
         </motion.div>
       </motion.div>

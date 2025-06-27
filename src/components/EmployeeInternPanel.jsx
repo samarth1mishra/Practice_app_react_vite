@@ -59,7 +59,7 @@ export const EmployeeInternPanel = () => {
             <FiFileText className="w-8 h-8" />
           </div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-2">
-            Profile Not Found
+          There is No Profile in the Session Storage. Please LogIn as Admin and add Profile.
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">{error}</p>
           <button

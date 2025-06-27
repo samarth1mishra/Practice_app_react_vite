@@ -62,7 +62,7 @@ const App = () => {
       <div className={`flex-1 p-4 overflow-auto transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'} md:ml-0`}>
     <Routes>
       <Route path="/login" element={<Login  setIsAdminLoggedIn={setIsAdminLoggedIn} setIsUserLoggedIn={setIsUserLoggedIn} activeTab={activeTab}/>}/>
-      <Route path="/signUp" element={<SignUp/>}/>
+      <Route path="/signUp" element={<SignUp activeTab={activeTab}/>}/>
       <Route path="/" element={
       <Content activeTab={activeTab} isAdminLoggedIn={isAdminLoggedIn} isUserLoggedIn={isUserLoggedIn} setIsAdminLoggedIn={setIsAdminLoggedIn} setIsUserLoggedIn={setIsUserLoggedIn}/>
        } />
