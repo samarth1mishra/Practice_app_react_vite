@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Plus, Edit2, Trash2, Eye, Upload, X, ChevronDown } from "lucide-react";
+import {EmployeeDetailsModal} from './EmployeeDetailsModal';
 import InputField from "./InputField";
 const generateId = (prefix, list) => {
   const nextIndex = list.length + 1;
@@ -25,7 +26,7 @@ export default function EmployeesTab({ departments, designations }) {
   const [sortBy, setSortBy] = useState("");
   const [filterBy, setFilterBy] = useState("");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+  const [viewingEmployee,setViewingEmployee]=useState(null);
   useEffect(() => {
     sessionStorage.setItem("employeesData", JSON.stringify(employees));
   }, [employees]);
@@ -152,7 +153,7 @@ export default function EmployeesTab({ departments, designations }) {
         employeeForm.documents.map(async (doc) => {
           if (doc.file instanceof Blob) {
             const fileBase64 = await toBase64(doc.file);
-            return { ...doc, file: fileBase64 };
+            return { ...doc, file: fileBase64,fileName:doc.file.name};
           }
           return doc;
         })
@@ -182,7 +183,7 @@ export default function EmployeesTab({ departments, designations }) {
       employeeForm.documents.map(async (doc) => {
         if (doc.file instanceof Blob) {
           const fileBase64 = await toBase64(doc.file);
-          return { ...doc, file: fileBase64 };
+          return { ...doc, file: fileBase64,fileName:doc.file.name};
         }
         return doc;
       })
@@ -212,18 +213,27 @@ export default function EmployeesTab({ departments, designations }) {
     setEmployees(newEmployees);
   };
 
-  const editEmployee = (index) => {
-    const employeeToEdit = employees[index];
-    const cleanEmployee = JSON.parse(JSON.stringify(employeeToEdit));
-
-    setEmployeeForm({
-      ...cleanEmployee,
-      documents: cleanEmployee.documents || [],
-    });
-    setEditingIndex(index);
-    setShowEmployeeForm(true);
-  };
-
+ const editEmployee=(index)=>{
+  const employeeToEdit=employees[index];
+  const documentsWithFiles=employeeToEdit.documents.map(doc=>{
+    if(typeof doc.file==='string'){
+      const byteCharacters=atob(doc.file.split(',')[1]);
+      const byteNumbers=new Array(byteCharacters.length);
+      for(let i=0;i<byteCharacters.length;i++){
+        byteNumbers[i]=byteCharacters.charCodeAt(i);
+      }
+      const byteArray=new Uint8Array(byteNumbers);
+      const blob=new Blob([byteArray],{type:'application/pdf'});
+      return {
+        ...doc,file:new File([blob],doc.fileName||'document.pdf',{type:'application/pdf'})
+      };
+    }
+    return doc;
+  })
+  setEmployeeForm({...employeeToEdit,documents:documentsWithFiles});
+  setEditingIndex(index);
+  setShowEmployeeForm(true);
+ }
   const resetEmployeeForm = () => {
     setEmployeeForm({ ...initialEmployeeForm });
   };
@@ -424,7 +434,7 @@ export default function EmployeesTab({ departments, designations }) {
                         <div className="flex gap-1 md:gap-2">
                           <button
                             onClick={() =>
-                              alert(`Viewing details for ${employee.fullName}`)
+                             setViewingEmployee(employee)
                             }
                             className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1"
                             title="View"
@@ -1066,7 +1076,7 @@ export default function EmployeesTab({ departments, designations }) {
                           />
                           {doc.file && (
                             <span className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                              {doc.file.name || "File selected"}
+                              {doc.file.name ||doc.fileName|| "File selected"}
                             </span>
                           )}
                         </div>
@@ -1222,6 +1232,12 @@ export default function EmployeesTab({ departments, designations }) {
           </form>
         </div>
       )}
+      {viewingEmployee && (
+       <EmployeeDetailsModal 
+       employee={viewingEmployee} 
+       onClose={() => setViewingEmployee(null)} 
+  />
+)}
     </div>
   );
 }
